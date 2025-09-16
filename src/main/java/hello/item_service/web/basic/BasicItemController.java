@@ -28,6 +28,13 @@ public class BasicItemController {
         return "basic/items"; //논리적 경로
     }
 
+    /**
+     * items 리스트에서 id 를 URL get 방식으로 받았다
+     * basic/items/itemId 호출
+     * itemId 를 @PathVariable 을 사용해서 가져오기
+     * 이 itemId 를 가지고 item 객체 찾기
+     * model에 넘겨주기 -> 다음 요청에서 사용한다
+     */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model){
         Item item = itemRepository.findById(itemId);
@@ -79,7 +86,7 @@ public class BasicItemController {
      * @ModelAttribute() 의 파라메터를 생략해서 넘겨주는 경우
      * 클래스 Item -> item 으로 앞글자만 소문자로 바꾼뒤 이것을 넘겨준다
      */
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV3(@ModelAttribute() Item item){
         itemRepository.save(item);
 
@@ -95,6 +102,30 @@ public class BasicItemController {
         itemRepository.save(item);
 
         return "basic/item";
+    }
+
+    /**
+     * 상품 수정 폼
+     */
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model){
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    /**
+     * 상품 수정 처리
+     * 같은 URL 에 form 태그로 Post 로 들어오면 여기서 매핑
+     * @PathVariable 로 id경로 받아오기
+     * @ModelAttribute 로 요청 파라메터에서 값을 모두 꺼낸후 item 객체에 넣기
+     * 이것을 Model에 model.addAttribute("item",item);으로 넣기
+     * 그후 redirect로 /basic/items/{itemId} 상세 정보페이지 요청 -> 매핑후 ->응답(화면 렌더링)
+     */
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
+        itemRepository.update(itemId,item);
+        return "redirect:/basic/items/{itemId}"; //다시 URL 을 요청할것을 응답
     }
     /**
      * 테스트 용
