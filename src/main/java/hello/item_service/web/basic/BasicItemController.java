@@ -34,7 +34,19 @@ public class BasicItemController {
         model.addAttribute("item", item);
         return "basic/item";
     }
+    @GetMapping("/add")
+    public String addForm(){
+        return "basic/addForm";
+    }
 
+    /**
+     * 상품등록 화면에서 form 태그의 post 방식으로 넘어온후
+     * 상품등록화면과 동일한 URL사용 but http메서드로 구분
+     */
+    @PostMapping("/add")
+    public String save(){
+        return "basic/addForm";
+    }
     /**
      * 테스트 용
      */
