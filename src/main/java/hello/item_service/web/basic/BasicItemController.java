@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -93,6 +94,12 @@ public class BasicItemController {
         return "basic/item";
     }
 
+    //@PostMapping("/add")
+    public String addItemV4(Item item){
+        itemRepository.save(item);
+
+        return "basic/item";
+    }//PRG 리펙토링
     /**
      * @ModelAttribute() 이거 자체도 생략 가능하다
      * 클래스 Item -> item 으로 앞글자만 소문자로 바꾼뒤 이것을 넘겨준다
@@ -104,16 +111,24 @@ public class BasicItemController {
      * 여기서 새로 고침을 하면 마지막 요청은 Get /items/{id} 이므로 이게 요청이 된다!!
      */
     //@PostMapping("/add")
-    public String addItemV4(Item item){
-        itemRepository.save(item);
-
-        return "basic/item";
-    }//PRG 리펙토링
-    @PostMapping("/add")
     public String addItemV5(Item item){
         itemRepository.save(item);
 
         return "redirect:/basic/items/"+item.getId();
+    }
+    /**
+     * 상품 저장시 상품 상세 화면에 "저장 되었습니다" 라는 메세지를 보여달라는 요구사항 해결
+     * RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible, 쿼리 파라미터까지 처리해준다
+     * redirect:/basic/{itemId}
+     * pathVariable 바인딩
+     * 나머지는 쿼리 파라미터로 처리
+     */
+    @PostMapping("/add")
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
     }
 
     /**
