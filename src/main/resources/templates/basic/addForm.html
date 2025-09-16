@@ -16,9 +16,14 @@
 </div>
   <h4 class="mb-3">상품 입력</h4>
   <!--action 이 치환이 된다-->
-  <!--동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다-->
+  <!--동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다
+  form 태그의 Post 방식 정리
+  content-Type: application/X-www-form-urlencoded
+  메세지 바디에 쿼리 파라메터 방식으로 전달 itemName=itemA&price=10000&quantity=10
+  요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용한다
+  -->
   <form action="item.html" th:action method="post">
-    <div>
+    <div><!--여기서 name="___" 의 형태로 form 데이터가 Post 방식으로 넘어온다 -->
       <label for="itemName">상품명</label>
       <input type="text" id="itemName" name="itemName" class="formcontrol"
              placeholder="이름을 입력하세요">
