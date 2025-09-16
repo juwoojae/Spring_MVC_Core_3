@@ -96,12 +96,24 @@ public class BasicItemController {
     /**
      * @ModelAttribute() 이거 자체도 생략 가능하다
      * 클래스 Item -> item 으로 앞글자만 소문자로 바꾼뒤 이것을 넘겨준다
+     * 새로고침 : 내가 마지막에 했던  요청을 한번 더한다
+     * PRG Post/Redirect/Get
+     * 만약 내가 Post /add 호출후 basic/item 렌더링 화면에서 새로고침을 하면
+     * Post /add 를 한번더 호출하게 된다
+     * Post /add 호출후 Redirect/items/{id} 상세 조회 페이지로 Redirect ->Get /items/{id} 호출 ->상세조회 페이지 렌더링
+     * 여기서 새로 고침을 하면 마지막 요청은 Get /items/{id} 이므로 이게 요청이 된다!!
      */
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV4(Item item){
         itemRepository.save(item);
 
         return "basic/item";
+    }//PRG 리펙토링
+    @PostMapping("/add")
+    public String addItemV5(Item item){
+        itemRepository.save(item);
+
+        return "redirect:/basic/items/"+item.getId();
     }
 
     /**
