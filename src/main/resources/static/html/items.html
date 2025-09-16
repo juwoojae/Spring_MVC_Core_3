@@ -1,56 +1,56 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="container" style="max-width: 600px">
-    <div class="py-5 text-center">
-        <h2>상품 목록</h2>
+  <div class="py-5 text-center">
+    <h2>상품 목록</h2>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary float-end"
+              onclick="location.href='addForm.html'"
+              th:onclick="|location.href='@{/basic/items/add}'|"
+              type="button">상품 등록  <!--템플릿 엔진으로 동적페이지를 다루기위한 URL-->
+      </button>
     </div>
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-primary float-end"
-                    onclick="location.href='addForm.html'"
-                    th:onclick="|location.href='@{/basic/items/add}'|"
-                    type="button">상품 등록  <!--템플릿 엔진으로 동적페이지를 다루기위한 URL-->
-            </button>
-        </div>
-    </div>
-    <hr class="my-4">
-    <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>상품명</th>
-                <th>가격</th>
-                <th>수량</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!--1. Model 의 items 을 꺼낸후 ${} 에 넣어 준다
-            2. 자바의 iter 와 동일함 items 의 요소 반복 item-->
-            <tr th:each="item : ${items}">
-                <!-- 타임 리프 문법 일부 정리(by me)
-                타임 리프가 좋은 점은 html 기반에서 동적인 부분만 치환해서 처리하기 때문이다 , HTML 양식을 크게 해치지 않는다
-                1. th:text ="${item.id}" 의 내용을 태그 안에 집어 넣기
-                2. getId() 메서드 호출 == item 객체의 id 프로퍼티
-                3. 정적 페이지 인 경우에는 href ="___"/ 동적이라면 th:href="@{/___} ( 타임리프에서 URL 관련은 @{} 를 사용한다)
-                4. "@{/basic/items/${itemId}(itemId=${item.id})}" item 객체의 id 프로퍼티 사용 -> itemId 에 대입
-                타임리프에서는 URL 도 템플릿 엔진으로 동적으로 변할수 있다 {itemId}-->
+  </div>
+  <hr class="my-4">
+  <div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>수량</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!--1. Model 의 items 을 꺼낸후 ${} 에 넣어 준다
+      2. 자바의 iter 와 동일함 items 의 요소 반복 item-->
+      <tr th:each="item : ${items}">
+        <!-- 타임 리프 문법 일부 정리(by me)
+        타임 리프가 좋은 점은 html 기반에서 동적인 부분만 치환해서 처리하기 때문이다 , HTML 양식을 크게 해치지 않는다
+        1. th:text ="${item.id}" 의 내용을 태그 안에 집어 넣기
+        2. getId() 메서드 호출 == item 객체의 id 프로퍼티
+        3. 정적 페이지 인 경우에는 href ="___"/ 동적이라면 th:href="@{/___} ( 타임리프에서 URL 관련은 @{} 를 사용한다)
+        4. "@{/basic/items/${itemId}(itemId=${item.id})}" item 객체의 id 프로퍼티 사용 -> itemId 에 대입
+        타임리프에서는 URL 도 템플릿 엔진으로 동적으로 변할수 있다 {itemId}-->
 
-                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">회원id</a></td>
-                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.itemName}">상품명</a></td>
-                <td th:text="${item.price}">10000</td>
-                <td th:text="${item.quantity}">10</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+        <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">회원id</a></td>
+        <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.itemName}">상품명</a></td>
+        <td th:text="${item.price}">10000</td>
+        <td th:text="${item.quantity}">10</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div> <!-- /container -->
 </body>
 </html>

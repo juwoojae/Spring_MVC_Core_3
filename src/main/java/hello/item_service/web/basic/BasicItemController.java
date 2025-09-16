@@ -6,9 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +27,17 @@ public class BasicItemController {
         //Error resolving template [basic/item]<-이 template이 존재하지 않는다, template might not exist
         return "basic/items"; //논리적 경로
     }
+
+    @GetMapping("/{itemId}")
+    public String item(@PathVariable long itemId, Model model){
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/item";
+    }
+
+    /**
+     * 테스트 용
+     */
     @PostConstruct
     public void init(){
         itemRepository.save(new Item("itemA", 10000, 10));
