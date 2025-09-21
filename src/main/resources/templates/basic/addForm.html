@@ -46,7 +46,22 @@
       <input type="text" id="quantity" th:field="*{quantity}" class="formcontrol"
              placeholder="수량을 입력하세요">
     </div>
-    <hr class="my-4">
+    <!-- single checkbox -->
+    <div>판매 여부</div>
+    <div>
+      <!--
+       체크박스에 체크를 하면open = ob  이라는 값이 넘어간다 스프링은 on 이라는 문자를 true 타입으로 변환해준다(Spring type converter)
+       체크를 안하면, open 이라는 필드가 form data 에 넘어가지 않는다
+       _open 히든 필드 사용
+       히든필드는 항상 전송된다. open 에 값이 있는지 확인하고 있다면 사용 _open 무시, 없다면 _open 을 넘겨주고
+       open 은 null 이 아닌 false 를 가지게 된다
+       -->
+      <div class="form-check">
+        <input type="checkbox" id="open" name="open" class="form-check-input">
+        <input type="hidden" name="_open" value="on"/> <!-- 히든 필드 추가 -->
+        <label for="open" class="form-check-label">판매 오픈</label>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등

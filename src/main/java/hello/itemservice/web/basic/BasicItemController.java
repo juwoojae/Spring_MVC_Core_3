@@ -4,6 +4,7 @@ import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/basic/items")
 @RequiredArgsConstructor // final 이 붇으면 생성자에서 생성자 주입을 자동으로 해준다
@@ -130,7 +132,11 @@ public class BasicItemController {
      * 나머지는 쿼리 파라미터로 처리
      */
     @PostMapping("/add")
+
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
+
+        log.info("item.open={}", item.getOpen());// lombok 의 getter
+
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
