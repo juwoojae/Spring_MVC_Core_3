@@ -1,7 +1,7 @@
-package hello.item_service.web.basic;
+package hello.itemservice.web.basic;
 
-import hello.item_service.domain.item.Item;
-import hello.item_service.domain.item.ItemRepository;
+import hello.itemservice.domain.item.Item;
+import hello.itemservice.domain.item.ItemRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/basic/items")
 @RequiredArgsConstructor // final 이 붇으면 생성자에서 생성자 주입을 자동으로 해준다
 public class BasicItemController {
+
     private final ItemRepository itemRepository;
 
     /**
@@ -22,7 +23,7 @@ public class BasicItemController {
      * Model 을 사용해서 DispatcherServlet 에 넘겨주기
      */
     @GetMapping
-    public String items(Model model){
+    public String items(Model model) {
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         //Error resolving template [basic/item]<-이 template이 존재하지 않는다, template might not exist
@@ -37,13 +38,15 @@ public class BasicItemController {
      * model에 넘겨주기 -> 다음 요청에서 사용한다
      */
     @GetMapping("/{itemId}")
-    public String item(@PathVariable long itemId, Model model){
+    public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/item";
     }
+
     @GetMapping("/add")
-    public String addForm(){
+    public String addForm(Model model) {
+        model.addAttribute("item", new Item());
         return "basic/addForm";
     }
 
@@ -53,9 +56,9 @@ public class BasicItemController {
      */
 //    @PostMapping("/add")
     public String addItemV1(@RequestParam String itemName,
-                       @RequestParam int price,
-                       @RequestParam Integer quantity,
-                       Model model){
+                            @RequestParam int price,
+                            @RequestParam Integer quantity,
+                            Model model) {
         Item item = new Item();
         item.setItemName(itemName);
         item.setPrice(price);
@@ -67,6 +70,7 @@ public class BasicItemController {
 
         return "basic/item";
     }
+
     /**
      * @ModelAttribute("model에 넘겨줄 이 름")
      * 1. Item 객체 생성
@@ -77,7 +81,7 @@ public class BasicItemController {
      * 하지만 @ResponseBody 는 뷰가 필요 없기때문에 사실상 3번은 생략
      */
     //@PostMapping("/add")
-    public String addItemV2(@ModelAttribute("item") Item item){
+    public String addItemV2(@ModelAttribute("item") Item item) {
         itemRepository.save(item);
 
         return "basic/item";
@@ -88,18 +92,19 @@ public class BasicItemController {
      * 클래스 Item -> item 으로 앞글자만 소문자로 바꾼뒤 이것을 넘겨준다
      */
     //@PostMapping("/add")
-    public String addItemV3(@ModelAttribute() Item item){
+    public String addItemV3(@ModelAttribute() Item item) {
         itemRepository.save(item);
 
         return "basic/item";
     }
 
     //@PostMapping("/add")
-    public String addItemV4(Item item){
+    public String addItemV4(Item item) {
         itemRepository.save(item);
 
         return "basic/item";
     }//PRG 리펙토링
+
     /**
      * @ModelAttribute() 이거 자체도 생략 가능하다
      * 클래스 Item -> item 으로 앞글자만 소문자로 바꾼뒤 이것을 넘겨준다
@@ -111,11 +116,12 @@ public class BasicItemController {
      * 여기서 새로 고침을 하면 마지막 요청은 Get /items/{id} 이므로 이게 요청이 된다!!
      */
     //@PostMapping("/add")
-    public String addItemV5(Item item){
+    public String addItemV5(Item item) {
         itemRepository.save(item);
 
-        return "redirect:/basic/items/"+item.getId();
+        return "redirect:/basic/items/" + item.getId();
     }
+
     /**
      * 상품 저장시 상품 상세 화면에 "저장 되었습니다" 라는 메세지를 보여달라는 요구사항 해결
      * RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible, 쿼리 파라미터까지 처리해준다
@@ -124,7 +130,7 @@ public class BasicItemController {
      * 나머지는 쿼리 파라미터로 처리
      */
     @PostMapping("/add")
-    public String addItemV6(Item item, RedirectAttributes redirectAttributes){
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
@@ -135,7 +141,7 @@ public class BasicItemController {
      * 상품 수정 폼
      */
     @GetMapping("/{itemId}/edit")
-    public String editForm(@PathVariable Long itemId, Model model){
+    public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/editForm";
@@ -144,21 +150,23 @@ public class BasicItemController {
     /**
      * 상품 수정 처리
      * 같은 URL 에 form 태그로 Post 로 들어오면 여기서 매핑
+     *
      * @PathVariable 로 id경로 받아오기
      * @ModelAttribute 로 요청 파라메터에서 값을 모두 꺼낸후 item 객체에 넣기
      * 이것을 Model에 model.addAttribute("item",item);으로 넣기
      * 그후 redirect로 /basic/items/{itemId} 상세 정보페이지 요청 -> 매핑후 ->응답(화면 렌더링)
      */
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
-        itemRepository.update(itemId,item);
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
         return "redirect:/basic/items/{itemId}"; //다시 URL 을 요청할것을 응답
     }
+
     /**
      * 테스트 용
      */
     @PostConstruct
-    public void init(){
+    public void init() {
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
 

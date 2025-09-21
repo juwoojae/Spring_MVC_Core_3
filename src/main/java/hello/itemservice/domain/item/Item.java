@@ -1,4 +1,4 @@
-package hello.item_service.domain.item;
+package hello.itemservice.domain.item;
 import lombok.Data;
 @Data
 public class Item {
@@ -12,4 +12,6 @@ public class Item {
         this.itemName = itemName;
         this.price = price;
         this.quantity = quantity; }
+
+
 }

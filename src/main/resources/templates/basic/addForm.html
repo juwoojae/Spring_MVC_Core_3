@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+  <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -15,27 +15,35 @@
   <h2>상품 등록 폼</h2>
 </div>
   <h4 class="mb-3">상품 입력</h4>
-  <!--action 이 치환이 된다-->
-  <!--동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다
+  <!--/*
+  동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다 =action="" 과 같음
   form 태그의 Post 방식 정리
   content-Type: application/X-www-form-urlencoded
   메세지 바디에 쿼리 파라메터 방식으로 전달 itemName=itemA&price=10000&quantity=10
   요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용한다
-  -->
-  <form action="item.html" th:action method="post">
+
+  th:object 를 커맨드 객체라고 한다
+  커맨드 객체를 사용하려면 먼저 해당 객체의 정보를 넘겨주어야한다
+  등록 폼 이기때문에 데이터가 비어있다면 빈 오브젝트를 만들어서 뷰에 전달한다
+  ${item.itemName}=*{itemName} : 선택 변수 식 이라고 한다. th:object 에서 선택한 객체에 접근한다
+  th:field : html태그의 id ,name, value 속성을 자동으로 처리해준다
+  id, name 생략 가능 ,value 는 자동으로 만든다
+
+  */-->
+  <form action="item.html" th:action th:object=${item} method="post">
     <div><!--여기서 name="___" 의 형태로 form 데이터가 Post 방식으로 넘어온다 -->
       <label for="itemName">상품명</label>
-      <input type="text" id="itemName" name="itemName" class="formcontrol"
+      <input type="text" id="itemName"  th:field="*{itemName}" class="formcontrol"
              placeholder="이름을 입력하세요">
     </div>
     <div>
       <label for="price">가격</label>
-      <input type="text" id="price" name="price" class="form-control"
+      <input type="text" id="price" th:field="*{price}" class="form-control"
              placeholder="가격을 입력하세요">
     </div>
     <div>
       <label for="quantity">수량</label>
-      <input type="text" id="quantity" name="quantity" class="formcontrol"
+      <input type="text" id="quantity" th:field="*{quantity}" class="formcontrol"
              placeholder="수량을 입력하세요">
     </div>
     <hr class="my-4">
