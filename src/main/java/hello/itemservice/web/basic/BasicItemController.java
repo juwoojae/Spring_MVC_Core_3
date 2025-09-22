@@ -1,5 +1,6 @@
 package hello.itemservice.web.basic;
 
+import hello.itemservice.domain.item.DeliveryCode;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import hello.itemservice.domain.item.ItemType;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +30,6 @@ public class BasicItemController {
      * 모든 컨트롤러 클래스의 메서드에 해당 return 값을
      * ("regions", regions) Model 에 넣어준다
      */
-    @ModelAttribute("itemTypes")
-    public ItemType[] itemTypes(){
-        return ItemType.values(); //ENUM 의 values() ENUM 형의 배열을 리턴
-    }
     @ModelAttribute("regions")
     public Map<String, String> regions(){
         Map<String, String> regions = new LinkedHashMap<>();
@@ -39,6 +37,19 @@ public class BasicItemController {
         regions.put("BUSAN", "부산");
         regions.put("JEJU", "제주");
         return regions;
+    }
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes(){
+        return ItemType.values(); //ENUM 의 values() ENUM 형의 배열을 리턴
+    }
+
+    @ModelAttribute("deliveryCodes")
+    public List<DeliveryCode> deliveryCodes() {
+        List<DeliveryCode> deliveryCodes = new ArrayList<>();
+        deliveryCodes.add(new DeliveryCode("FAST", "빠른 배송"));
+        deliveryCodes.add(new DeliveryCode("NORMAL", "일반 배송"));
+        deliveryCodes.add(new DeliveryCode("SLOW", "느린 배송"));
+        return deliveryCodes;
     }
     /**
      * 아이템 목록 items.html 을 랜더링하는 컨트롤러
