@@ -20,7 +20,7 @@
     <div>
         <label for="itemId">상품 ID</label>
         <input type="text" id="itemId" name="itemId" class="form-control"
-               value="1" th:value="${item.id}"readonly >
+               value="1" th:value="${item.id}" readonly>
     </div>
     <div>
         <label for="itemName">상품명</label>
@@ -29,7 +29,7 @@
     </div>
     <div>
         <label for="price">가격</label>
-        <input type="text" id="price" name="price" class="form-control" value="10000" th:value="${item.price}"readonly>
+        <input type="text" id="price" name="price" class="form-control" value="10000" th:value="${item.price}" readonly>
     </div>
     <div>
         <label for="quantity">수량</label>
@@ -47,6 +47,23 @@
             -->
             <input type="checkbox" id="open" th:field="${item.open}" class="formcheck-input" disabled>
             <label for="open" class="form-check-label">판매 오픈</label>
+        </div>
+    </div>
+    <!--
+     멀티 체크 박스에서 등록 지역을 선택해서 저장하면,  조회시 checked 속성이 추가된것을 확인할수 있다
+     타임리프는 th:field 에 지정한 값과 th:value 의 값을 비교해서 체크를 자동으로 처리해준다
+     1. th:field = ="${item.regions}" 하면 타임리프는 태그의 id, name, value 속성을 자동으로 추가해준다 name ="regions" ...
+     2. th:value="${region.key}" 가 th:field 에 지정한 값과 비교하여 checked 처리를 해준다
+
+     -->
+    <div>
+        <div>등록 지역</div >
+        <div th:each="region : ${regions}" class="form-check form-check-inline">
+
+            <input type="checkbox" th:field="${item.regions}" th:value="${region.key}"
+                   class="form-check-input" disabled>
+            <label th:for="${#ids.prev('regions')}"
+                   th:text="${region.value}" class="form-check-label">서울</label>
         </div>
     </div>
     <div class="row">
@@ -70,3 +87,25 @@
 </div> <!-- /container -->
 </body>
 </html>
+
+<!--/*
+<div>등록 지역</div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" value=""SEOUL
+                   class="form-check-input" disabled id="regions1" name="regions" checked="checked">
+            <label for="regions1"
+                   class="form-check-label">서울</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" value="BUSAN"
+                   class="form-check-input" disabled id="regions2" name="regions" checked="checked">
+            <label for="regions2"
+                   class="form-check-label">부산</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" value="JEJU"
+                   class="form-check-input" disabled id="regions3" name="regions">
+            <label for="regions3"
+                   class="form-check-label">제주</label>
+        </div>
+*/-->

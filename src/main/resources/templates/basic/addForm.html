@@ -79,20 +79,32 @@
                 <input type="checkbox" id="open" th:field="*{open}" class="form-checkinput">
                 <label for="open" class="form-check-label">판매 오픈</label>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등
-                    록
-                </button>
+            <!-- multi checkbox -->
+            <div>
+                <div>등록 지역</div>
+                <div th:each="region : ${regions}" class="form-check form-check-inline">
+                    <!--/*
+                    th:field 를 하면 th:object (item) 의 regions 을 가져온다 그리고
+                    1. id, name, value 를 추가해주는데,  여기서 id 는 태그마다 고유하게 1개씩만 가지므로 ,
+                    타임리프가 자동으로 regions1,regions2... 넘버링을 해준다
+                    2. regions 도 _open 과 마찬가지로 스프링 mvc 가 _region 을 제공해준다
+                    */-->
+                    <input type="checkbox" th:field="*{regions}" th:value="${region.key}" class="form-check-input">
+                    <label th:for="${#ids.prev('regions')}" th:text="${region.value}"
+                           class="form-check-label">서울</label>
+                </div>
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/basic/items}'|" type="button">취소
-                </button>
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등록</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='items.html'"
+                            th:onclick="|location.href='@{/basic/items}'|" type="button">취소
+                    </button>
+                </div>
             </div>
-        </div>
     </form>
 </div> <!-- /container -->
 </body>
