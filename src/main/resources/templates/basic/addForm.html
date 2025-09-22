@@ -1,79 +1,99 @@
-  <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <link th:href="@{/css/bootstrap.min.css}"
-        href="../css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .container {
-    max-width: 560px;
-    }
-  </style>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+        max-width: 560px;
+        }
+    </style>
 </head>
 <body>
-<div class="container"> <div class="py-5 text-center">
-  <h2>상품 등록 폼</h2>
-</div>
-  <h4 class="mb-3">상품 입력</h4>
-  <!--/*
-  동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다 =action="" 과 같음
-  form 태그의 Post 방식 정리
-  content-Type: application/X-www-form-urlencoded
-  메세지 바디에 쿼리 파라메터 방식으로 전달 itemName=itemA&price=10000&quantity=10
-  요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용한다
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>상품 등록 폼</h2>
+    </div>
+    <h4 class="mb-3">상품 입력</h4>
+    <!--/*
+    동일한 URL 에 http메서드만 다르다면 th:___ 비워줘도 된다 =action="" 과 같음
+    form 태그의 Post 방식 정리
+    content-Type: application/X-www-form-urlencoded
+    메세지 바디에 쿼리 파라메터 방식으로 전달 itemName=itemA&price=10000&quantity=10
+    요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용한다
 
-  th:object 를 커맨드 객체라고 한다
-  커맨드 객체를 사용하려면 먼저 해당 객체의 정보를 넘겨주어야한다
-  등록 폼 이기때문에 데이터가 비어있다면 빈 오브젝트를 만들어서 뷰에 전달한다
-  ${item.itemName}=*{itemName} : 선택 변수 식 이라고 한다. th:object 에서 선택한 객체에 접근한다
-  th:field : html태그의 id ,name, value 속성을 자동으로 처리해준다
-  id, name 생략 가능 ,value 는 자동으로 만든다
+    th:object 를 커맨드 객체라고 한다
+    커맨드 객체를 사용하려면 먼저 해당 객체의 정보를 넘겨주어야한다
+    등록 폼 이기때문에 데이터가 비어있다면 빈 오브젝트를 만들어서 뷰에 전달한다
+    ${item.itemName}=*{itemName} : 선택 변수 식 이라고 한다. th:object 에서 선택한 객체에 접근한다
+    주의) th:object 가 없으면 선택 변수 식은 써줄수 없다
+    th:field : html태그의 id ,name, value 속성을 자동으로 처리해준다
+    id, name 생략 가능 ,value 는 자동으로 만든다
 
-  */-->
-  <form action="item.html" th:action th:object=${item} method="post">
-    <div><!--여기서 name="___" 의 형태로 form 데이터가 Post 방식으로 넘어온다 -->
-      <label for="itemName">상품명</label>
-      <input type="text" id="itemName"  th:field="*{itemName}" class="formcontrol"
-             placeholder="이름을 입력하세요">
-    </div>
-    <div>
-      <label for="price">가격</label>
-      <input type="text" id="price" th:field="*{price}" class="form-control"
-             placeholder="가격을 입력하세요">
-    </div>
-    <div>
-      <label for="quantity">수량</label>
-      <input type="text" id="quantity" th:field="*{quantity}" class="formcontrol"
-             placeholder="수량을 입력하세요">
-    </div>
-    <!-- single checkbox -->
-    <div>판매 여부</div>
-    <div>
-      <!--
-       체크박스에 체크를 하면open = ob  이라는 값이 넘어간다 스프링은 on 이라는 문자를 true 타입으로 변환해준다(Spring type converter)
-       체크를 안하면, open 이라는 필드가 form data 에 넘어가지 않는다
-       _open 히든 필드 사용
-       히든필드는 항상 전송된다. open 에 값이 있는지 확인하고 있다면 사용 _open 무시, 없다면 _open 을 넘겨주고
-       open 은 null 이 아닌 false 를 가지게 된다
-       -->
-      <div class="form-check">
-        <input type="checkbox" id="open" name="open" class="form-check-input">
-        <input type="hidden" name="_open" value="on"/> <!-- 히든 필드 추가 -->
+    */-->
+    <form action="item.html" th:action th:object=${item} method="post">
+        <div><!--여기서 name="___" 의 형태로 form 데이터가 Post 방식으로 넘어온다 -->
+            <label for="itemName">상품명</label>
+            <input type="text" id="itemName" th:field="*{itemName}" class="formcontrol"
+                   placeholder="이름을 입력하세요">
+        </div>
+        <div>
+            <label for="price">가격</label>
+            <input type="text" id="price" th:field="*{price}" class="form-control"
+                   placeholder="가격을 입력하세요">
+        </div>
+        <div>
+            <label for="quantity">수량</label>
+            <input type="text" id="quantity" th:field="*{quantity}" class="formcontrol"
+                   placeholder="수량을 입력하세요">
+        </div>
+
+        <!--/*
+         체크박스에 체크를 하면 open = on  이라는 값이 넘어간다 스프링은 on 이라는 문자를 true 타입으로 변환해준다(Spring type converter)
+         체크를 안하면, open 이라는 필드가 form data 에 넘어가지 않는다 open 은 null. 서버에 open 데이터가 존재하지 않음
+         그래서 Spring 은  _open 를 제공해준다
+         히든필드는 항상 전송된다. open 에 값이 있는지 확인하고 있다면 사용 _open 무시, 없다면 _open 을 넘겨주고
+         open 은 null 이 아닌 false 를 가지게 된다
+
+         th:field 를 써서 리팩토링 할수 있다
+         1. id, name, value 자동처리기능
+         2. 체크 박스의 히든 필드와 관련된 부분도 처리
+         <div class="form-check">
+          <input type="checkbox" id="open" name="open" class="form-check-input">
+          <input type="hidden" name="_open" value="on"/>
         <label for="open" class="form-check-label">판매 오픈</label>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등
-          록</button>
-      </div>
-      <div class="col">
-        <button class="w-100 btn btn-secondary btn-lg"
-                onclick="location.href='items.html'"
-                th:onclick="|location.href='@{/basic/items}'|" type="button">취소</button>
-      </div>
-    </div>
-  </form>
+        스프링 mvc 체크박스 바인딩
+      _open 은 자연 html 이다
+     checked -> open = on & _open = on
+     이면 open = true
+     unchecked -> _open = on (체크 박스가 폼에 있었다)
+     만약 히든 필드(html)가 있으면 자동적으로 open = false
+     정리) th:field 를 사용하면 체크박스가 자동으로 바인딩된다 (히든 필드를 자동으로 추가)
+      */-->
+        <!-- single checkbox -->
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <input type="checkbox" id="open" th:field="*{open}" class="form-checkinput">
+                <label for="open" class="form-check-label">판매 오픈</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등
+                    록
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/basic/items}'|" type="button">취소
+                </button>
+            </div>
+        </div>
+    </form>
 </div> <!-- /container -->
 </body>
 </html>
