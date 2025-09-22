@@ -66,6 +66,19 @@
                    th:text="${region.value}" class="form-check-label">서울</label>
         </div>
     </div>
+    <!-- radio button
+     th:field="${item.itemType}", th:value="${type.name()}" 두개가 같으면 checked 를 한다
+     -->
+    <div>
+        <div>상품 종류</div>
+        <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
+            <input type="radio" th:field="${item.itemType}" th:value="${type.name()}" class="form-check-input" disabled>
+            <label th:for="${#ids.prev('itemType')}" th:text="${type.description}"
+                   class="form-check-label">
+                BOOK
+            </label>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <!--
@@ -107,5 +120,11 @@
                    class="form-check-input" disabled id="regions3" name="regions">
             <label for="regions3"
                    class="form-check-label">제주</label>
+        </div>
+
+
+        <div class="form-check form-check-inline">
+            <input type="radio" value="BOOK" class="form-check-input" disabled id="itemType1" name="itemType" checked="checked">
+            <label for="itemType1" class="form-check-label">도서</label>
         </div>
 */-->

@@ -2,6 +2,7 @@ package hello.itemservice.web.basic;
 
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.domain.item.ItemType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,10 @@ public class BasicItemController {
      * 모든 컨트롤러 클래스의 메서드에 해당 return 값을
      * ("regions", regions) Model 에 넣어준다
      */
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes(){
+        return ItemType.values(); //ENUM 의 values() ENUM 형의 배열을 리턴
+    }
     @ModelAttribute("regions")
     public Map<String, String> regions(){
         Map<String, String> regions = new LinkedHashMap<>();
@@ -152,6 +157,7 @@ public class BasicItemController {
 
         log.info("item.open={}", item.getOpen());// lombok 의 getter
         log.info("item.regions={}", item.getRegions());
+        log.info("item.ItemType={}", item.getItemType());
 
         Item savedItem = itemRepository.save(item); //넘어온 form data 들을 모두 itemRepository 에 저장
         redirectAttributes.addAttribute("itemId", savedItem.getId());
